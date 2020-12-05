@@ -39,13 +39,14 @@ class _DetalhesPageState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          widget.comprimido ? Colors.deepOrange : Colors.blueAccent,
+          widget.comprimido ? Colors.deepOrange.shade400 : Colors.blueAccent,
       body: Scrollbar(
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor:
-                  widget.comprimido ? Colors.deepOrange : Colors.blueAccent,
+              backgroundColor: widget.comprimido
+                  ? Colors.deepOrange.shade400
+                  : Colors.blueAccent,
               actions: [
                 IconButton(
                   icon: Icon(Icons.more_horiz),
@@ -116,7 +117,6 @@ class _DetalhesPageState
                       right: 20,
                     ),
                     width: double.infinity,
-                    //height: MediaQuery.of(context).size.height * 0.9,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -135,7 +135,7 @@ class _DetalhesPageState
                           ),
                         ),
                         SizedBox(
-                          height: 15,
+                          height: 5,
                         ),
                         Text(
                           'Remédio para dor de cabeça',
@@ -156,7 +156,7 @@ class _DetalhesPageState
                           ),
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 15,
                         ),
                         ListView.builder(
                           shrinkWrap: true,

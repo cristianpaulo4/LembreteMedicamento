@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lebrete_medicamento/app/modules/home/components/cardAlerta.dart';
 import 'package:lebrete_medicamento/app/modules/home/components/cardItem.dart';
+import 'package:lebrete_medicamento/model/medicamentoModel.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -66,18 +68,6 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   }
 
   Future<void> notificationAfterSec() async {
-    int hrs = 8;
-    int ml = 120;
-    int qtdDoses = (ml / hrs).floor();
-
-    print(qtdDoses);
-    print('*' * 50);
-
-    for (var i = 0; i < qtdDoses; i++) {
-      var timeDelayed = DateTime.now().add(Duration(hours: (hrs * i)));
-      print(timeDelayed);
-    }
-
     /* AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
       'second channel ID',
@@ -233,34 +223,47 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                   color: Color(0xff264771),
                 ),
               ),
-              CardItem(
-                comprimido: true,
-                tag: '1',
-                onPressd: () {
-                  Modular.to.pushNamed(
-                    '/detalhes',
-                    arguments: {'tag': '1', 'comp': true},
-                  );
-                },
-              ),
-              CardItem(
-                comprimido: false,
-                tag: '2',
-                onPressd: () {
-                  Modular.to.pushNamed(
-                    '/detalhes',
-                    arguments: {'tag': '2', 'comp': false},
-                  );
-                },
-              ),
-              CardItem(
-                comprimido: true,
-                tag: '3',
-                onPressd: () {
-                  Modular.to.pushNamed(
-                    '/detalhes',
-                    arguments: {'tag': '3', 'comp': true},
-                  );
+              Observer(
+                builder: (_) {
+                  if (controller.listarMedicamentos != null) {
+                    return ListView.builder(
+                      itemCount: controller.listarMedicamentos.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (_, i) {
+                        MedicamentoModel model = MedicamentoModel(
+                          id: controller.listarMedicamentos.elementAt(i)['id'],
+                          nome: controller.listarMedicamentos
+                              .elementAt(i)['nome'],
+                          descricao: controller.listarMedicamentos
+                              .elementAt(i)['descricao'],
+                          qtdDiaria: controller.listarMedicamentos
+                              .elementAt(i)['qtdDiaria'],
+                          comprimido: controller.listarMedicamentos
+                                      .elementAt(i)['comprimido'] ==
+                                  '1'
+                              ? true
+                              : false,
+                        );
+
+                        return CardItem(
+                          titulo: model.nome,
+                          detalhes: model.descricao,
+                          ml: model.qtdDiaria.toString(),
+                          comprimido: model.comprimido,
+                          tag: model.id.toString(),
+                          onPressd: () {
+                            Modular.to.pushNamed(
+                              '/detalhes',
+                              arguments: {'tag': '1', 'comp': true},
+                            );
+                          },
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator.adaptive());
+                  }
                 },
               ),
               SizedBox(
@@ -275,7 +278,9 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         backgroundColor: Color(0xff4FCD9F),
         label: Text('Adicionar'),
         icon: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          Modular.to.pushNamed('/cadastro');
+        },
       ),
     );
   }

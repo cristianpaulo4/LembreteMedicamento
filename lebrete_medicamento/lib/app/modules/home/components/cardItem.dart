@@ -63,7 +63,7 @@ class CardItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Hydrocodone',
+                        '$titulo',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -71,7 +71,7 @@ class CardItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '10 ml',
+                        '$ml ml',
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.white,
@@ -96,7 +96,7 @@ class CardItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'When you Waker up.',
+                  '$detalhes',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,

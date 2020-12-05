@@ -1,3 +1,5 @@
+import 'package:lebrete_medicamento/model/medicamentoModel.dart';
+import 'package:lebrete_medicamento/repository/MedicamentoRepositoryInterface.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -7,11 +9,13 @@ part 'cadastro_controller.g.dart';
 class CadastroController = _CadastroControllerBase with _$CadastroController;
 
 abstract class _CadastroControllerBase with Store {
-  @observable
-  int value = 0;
+  final IMedicamentoRepository _repository;
+  _CadastroControllerBase(this._repository);
 
   @action
-  void increment() {
-    value++;
+  Future cadastroMedicamento(MedicamentoModel model) async {
+    if (await this._repository.cadastrar(model)) {
+      print('Cadastrado com sucesso');
+    }
   }
 }

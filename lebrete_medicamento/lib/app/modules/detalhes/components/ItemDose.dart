@@ -8,7 +8,7 @@ class ItemDose extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          height: 120,
+          height: 100,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -24,10 +24,10 @@ class ItemDose extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Dipirona Sódica',
+                              'Horário: 1:08pm',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 30,
+                                fontSize: 20,
                                 color: Colors.blueGrey.shade800,
                               ),
                             ),
@@ -35,16 +35,8 @@ class ItemDose extends StatelessWidget {
                               'Data: 05/12/2020',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                                color: Colors.blueGrey.shade200,
-                              ),
-                            ),
-                            Text(
-                              'Horário: 1:08pm',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                                color: Colors.blueGrey.shade200,
+                                fontSize: 20,
+                                color: Colors.blueGrey.shade800,
                               ),
                             ),
                           ],
@@ -56,12 +48,12 @@ class ItemDose extends StatelessWidget {
                           visible: true,
                           child: Icon(
                             Icons.check_circle,
-                            size: 70,
+                            size: 50,
                             color: Colors.greenAccent.shade400,
                           ),
                           replacement: Icon(
                             Icons.info,
-                            size: 70,
+                            size: 50,
                             color: Colors.red.shade400,
                           ),
                         ),
