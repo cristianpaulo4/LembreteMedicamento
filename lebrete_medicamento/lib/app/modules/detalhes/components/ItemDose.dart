@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 
 class ItemDose extends StatelessWidget {
+  final String time;
+  final bool ok;
+  const ItemDose({Key key, this.time, this.ok}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    DateTime data = DateTime.parse("$time");
+
     return Container(
       margin: EdgeInsets.only(bottom: 30),
       child: ClipRRect(
@@ -24,7 +32,7 @@ class ItemDose extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Horário: 1:08pm',
+                              'Horário: ${DateFormat.jm().format(data)}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -32,7 +40,7 @@ class ItemDose extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Data: 05/12/2020',
+                              'Data: ${DateFormat('dd/MM/yyyy').format(data)}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -45,7 +53,7 @@ class ItemDose extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Visibility(
-                          visible: true,
+                          visible: ok,
                           child: Icon(
                             Icons.check_circle,
                             size: 50,
@@ -64,7 +72,7 @@ class ItemDose extends StatelessWidget {
               ),
               Container(
                 height: 5,
-                color: true ? Colors.greenAccent.shade400 : Colors.red.shade400,
+                color: ok ? Colors.greenAccent.shade400 : Colors.red.shade400,
               )
             ],
           ),

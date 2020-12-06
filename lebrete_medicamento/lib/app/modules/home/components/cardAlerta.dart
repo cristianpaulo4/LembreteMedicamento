@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CardAlerta extends StatelessWidget {
@@ -53,13 +54,13 @@ class CardAlerta extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Hydrocodone',
+                      AutoSizeText(
+                        'Hora do Medicamentos',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 30,
                           color: Colors.white,
                         ),
+                        presetFontSizes: [25, 30, 15],
                       ),
                     ],
                   ),
@@ -71,13 +72,24 @@ class CardAlerta extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'When you Waker up.',
+                AutoSizeText(
+                  'Medicamentos a serem tomados',
                   style: TextStyle(
-                    fontSize: 20,
                     color: Colors.white,
                   ),
+                  presetFontSizes: [17],
                 ),
+                SizedBox(
+                  height: 40,
+                  child: FloatingActionButton.extended(
+                    heroTag: null,
+                    backgroundColor: Colors.greenAccent,
+                    label: Text('Ver'),
+                    icon: Icon(Icons.check),
+                    elevation: 2,
+                    onPressed: onPressd,
+                  ),
+                )
               ],
             ),
           ),

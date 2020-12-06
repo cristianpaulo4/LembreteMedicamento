@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lebrete_medicamento/app/modules/detalhes/components/ItemDose.dart';
+import 'package:lebrete_medicamento/model/medicamentoModel.dart';
 import 'detalhes_controller.dart';
 
 class DetalhesPage extends StatefulWidget {
-  final String title;
-  final bool comprimido;
-  final String tag;
-
-  const DetalhesPage(
-      {Key key, this.title = "Detalhes", this.comprimido, this.tag})
-      : super(key: key);
+  final MedicamentoModel model;
+  const DetalhesPage({Key key, this.model}) : super(key: key);
 
   @override
   _DetalhesPageState createState() => _DetalhesPageState();
@@ -18,33 +15,24 @@ class DetalhesPage extends StatefulWidget {
 
 class _DetalhesPageState
     extends ModularState<DetalhesPage, DetalhesController> {
-  bool _ativar = false;
-
   @override
   void initState() {
-    _init();
+    controller.init(widget.model.id);
 
     super.initState();
-  }
-
-  _init() async {
-    await Future.delayed(Duration(milliseconds: 200), () {
-      setState(() {
-        _ativar = true;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          widget.comprimido ? Colors.deepOrange.shade400 : Colors.blueAccent,
+      backgroundColor: widget.model.comprimido
+          ? Colors.deepOrange.shade400
+          : Colors.blueAccent,
       body: Scrollbar(
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor: widget.comprimido
+              backgroundColor: widget.model.comprimido
                   ? Colors.deepOrange.shade400
                   : Colors.blueAccent,
               actions: [
@@ -65,8 +53,8 @@ class _DetalhesPageState
                       Container(
                         alignment: Alignment.bottomCenter,
                         child: Hero(
-                          tag: widget.tag,
-                          child: widget.comprimido
+                          tag: widget.model.id.toString(),
+                          child: widget.model.comprimido
                               ? Image.asset(
                                   'lib/assets/comp.png',
                                   width: 80,
@@ -85,7 +73,7 @@ class _DetalhesPageState
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'Dipirona',
+                            '${widget.model.nome}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 50,
@@ -93,7 +81,7 @@ class _DetalhesPageState
                             ),
                           ),
                           Text(
-                            '02 X 10 ml',
+                            '02 X ${widget.model.qtdDiaria} ml',
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.white,
@@ -138,7 +126,28 @@ class _DetalhesPageState
                           height: 5,
                         ),
                         Text(
-                          'Remédio para dor de cabeça',
+                          widget.model.descricao,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: Colors.blueGrey.shade800,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          'INTERVALOS',
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.blueGrey.shade300,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          widget.model.intervalos.toString() + ' H',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
@@ -158,12 +167,27 @@ class _DetalhesPageState
                         SizedBox(
                           height: 15,
                         ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 10,
-                          itemBuilder: (_, i) {
-                            return ItemDose();
+                        Observer(
+                          builder: (_) {
+                            if (controller.listarDoses.result != null) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: controller.listarDoses.value.length,
+                                itemBuilder: (_, i) {
+                                  return ItemDose(
+                                    time: controller.listarDoses.value
+                                        .elementAt(i)
+                                        .time,
+                                    ok: controller.listarDoses.value
+                                        .elementAt(i)
+                                        .ok,
+                                  );
+                                },
+                              );
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
                           },
                         ),
                         SizedBox(

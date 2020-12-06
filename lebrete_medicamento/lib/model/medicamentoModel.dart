@@ -20,12 +20,12 @@ class MedicamentoModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'comprimido': comprimido,
       'nome': nome,
       'descricao': descricao,
       'qtdTotal': qtdTotal,
       'qtdDiaria': qtdDiaria,
       'intervalos': intervalos,
+      'comprimido': comprimido ? 1 : 0,
     };
   }
 
@@ -34,7 +34,7 @@ class MedicamentoModel {
 
     return MedicamentoModel(
       id: map['id'],
-      comprimido: map['xarope'],
+      comprimido: map['comprimido'] == 1 ? true : false,
       nome: map['nome'],
       descricao: map['descricao'],
       qtdTotal: map['qtdTotal'],

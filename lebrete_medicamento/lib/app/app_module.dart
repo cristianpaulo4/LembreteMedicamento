@@ -3,9 +3,10 @@ import 'package:lebrete_medicamento/app/modules/cadastro/cadastro_controller.dar
 import 'package:lebrete_medicamento/app/modules/cadastro/cadastro_page.dart';
 import 'package:lebrete_medicamento/app/modules/detalhes/detalhes_controller.dart';
 import 'package:lebrete_medicamento/app/modules/detalhes/detalhes_page.dart';
+import 'package:lebrete_medicamento/app/modules/telaLembrete/tela_lembrete_controller.dart';
+import 'package:lebrete_medicamento/app/modules/telaLembrete/tela_lembrete_page.dart';
 import 'package:lebrete_medicamento/repository/MedicamentoRepository.dart';
 import 'package:lebrete_medicamento/repository/MedicamentoRepositoryInterface.dart';
-
 import 'app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class AppModule extends MainModule {
         Bind((i) => BancoLocal()),
         Bind<IMedicamentoRepository>((i) => MedicamentoRepository(i.get())),
         Bind((i) => CadastroController(i.get())),
+        $TelaLembreteController,
       ];
 
   @override
@@ -33,9 +35,13 @@ class AppModule extends MainModule {
         ModularRouter(
           '/detalhes',
           child: (_, args) => DetalhesPage(
-            comprimido: args.data['comp'],
-            tag: args.data['tag'],
+            model: args.data,
           ),
+          transition: TransitionType.fadeIn,
+        ),
+        ModularRouter(
+          '/lembrete',
+          child: (_, args) => TelaLembretePage(),
           transition: TransitionType.fadeIn,
         ),
       ];

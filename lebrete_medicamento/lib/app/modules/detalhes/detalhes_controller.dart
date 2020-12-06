@@ -1,3 +1,5 @@
+import 'package:lebrete_medicamento/model/doesModel.dart';
+import 'package:lebrete_medicamento/repository/MedicamentoRepositoryInterface.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -7,11 +9,17 @@ part 'detalhes_controller.g.dart';
 class DetalhesController = _DetalhesControllerBase with _$DetalhesController;
 
 abstract class _DetalhesControllerBase with Store {
+  final IMedicamentoRepository _repository;
+  _DetalhesControllerBase(this._repository);
+
   @observable
-  int value = 0;
+  ObservableFuture<List<DoseModel>> _listaDoses;
 
   @action
-  void increment() {
-    value++;
+  init(int id) {
+    _listaDoses = this._repository.listarDoses(id).asObservable();
   }
+
+  @computed
+  ObservableFuture<List<DoseModel>> get listarDoses => this._listaDoses;
 }

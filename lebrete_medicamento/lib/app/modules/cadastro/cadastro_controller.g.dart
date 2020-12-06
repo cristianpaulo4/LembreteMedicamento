@@ -23,9 +23,10 @@ mixin _$CadastroController on _CadastroControllerBase, Store {
       AsyncAction('_CadastroControllerBase.cadastroMedicamento');
 
   @override
-  Future<dynamic> cadastroMedicamento(MedicamentoModel model) {
+  Future<dynamic> cadastroMedicamento(
+      MedicamentoModel model, DateTime dateTime) {
     return _$cadastroMedicamentoAsyncAction
-        .run(() => super.cadastroMedicamento(model));
+        .run(() => super.cadastroMedicamento(model, dateTime));
   }
 
   @override

@@ -13,9 +13,10 @@ abstract class _CadastroControllerBase with Store {
   _CadastroControllerBase(this._repository);
 
   @action
-  Future cadastroMedicamento(MedicamentoModel model) async {
-    if (await this._repository.cadastrar(model)) {
+  Future cadastroMedicamento(MedicamentoModel model, DateTime dateTime) async {
+    if (await this._repository.cadastrar(model, dateTime)) {
       print('Cadastrado com sucesso');
+      Modular.to.pop();
     }
   }
 }

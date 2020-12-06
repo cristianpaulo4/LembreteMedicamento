@@ -1,10 +1,11 @@
 import 'package:sqlcool/sqlcool.dart';
 
 class BancoLocal {
-  Db db = Db();
+  Db _db = Db();
 
   Future<Db> inicializar() async {
-    String dbpath = "2.sqlite";
+    print('Criando Banco');
+    String dbpath = "6.sqlite";
     DbTable dados = DbTable("dados")
       ..varchar("nome")
       ..varchar("descricao")
@@ -25,8 +26,9 @@ class BancoLocal {
     List<DbTable> schema = [dados, dose];
 
     try {
-      await db.init(path: dbpath, schema: schema);
-      return db;
+      await _db.init(path: dbpath, schema: schema);
+      print('Banco inicialidado');
+      return _db;
     } catch (e) {
       rethrow;
     }

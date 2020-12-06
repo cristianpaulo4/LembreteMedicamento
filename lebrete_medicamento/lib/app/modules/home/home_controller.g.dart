@@ -7,7 +7,7 @@ part of 'home_controller.dart';
 // **************************************************************************
 
 final $HomeController = BindInject(
-  (i) => HomeController(i<IMedicamentoRepository>(), i<BancoLocal>()),
+  (i) => HomeController(),
   singleton: true,
   lazy: true,
 );
@@ -43,9 +43,25 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  final _$blocAtom = Atom(name: '_HomeControllerBase.bloc');
+
+  @override
+  SelectBloc get bloc {
+    _$blocAtom.reportRead();
+    return super.bloc;
+  }
+
+  @override
+  set bloc(SelectBloc value) {
+    _$blocAtom.reportWrite(value, super.bloc, () {
+      super.bloc = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
+bloc: ${bloc},
 listarMedicamentos: ${listarMedicamentos}
     ''';
   }

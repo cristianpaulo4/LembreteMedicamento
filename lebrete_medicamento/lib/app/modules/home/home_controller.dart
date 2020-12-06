@@ -9,27 +9,30 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
-  final IMedicamentoRepository _repository;
-  final BancoLocal _bancoLocal;
+  final IMedicamentoRepository _repository = Modular.get();
+  final BancoLocal _bancoLocal = Modular.get();
 
   @observable
   ObservableStream<List<Map>> _medicamentos;
+  @observable
   SelectBloc bloc;
 
-  _HomeControllerBase(this._repository, this._bancoLocal) {
+  _HomeControllerBase() {
     _init();
   }
 
   _init() async {
-    var db = await _bancoLocal.inicializar();
+    this._repository.listar();
+    Db _db = await this._bancoLocal.inicializar();
+
     this.bloc = SelectBloc(
       table: "dados",
       orderBy: "id DESC",
       verbose: true,
-      database: db,
+      database: _db,
       reactive: true,
     );
-    _medicamentos = this.bloc.items.asObservable(initialValue: []);
+    _medicamentos = this.bloc.items.asObservable();
   }
 
   @computed

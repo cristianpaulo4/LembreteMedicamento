@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CardItem extends StatelessWidget {
@@ -62,13 +63,13 @@ class CardItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      AutoSizeText(
                         '$titulo',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 30,
                           color: Colors.white,
                         ),
+                        presetFontSizes: [28, 20, 15],
                       ),
                       Text(
                         '$ml ml',

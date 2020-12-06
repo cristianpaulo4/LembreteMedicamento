@@ -19,9 +19,10 @@ class _CadastroPageState
   TextEditingController _totalml = TextEditingController();
   TextEditingController _ml = TextEditingController();
   TextEditingController _intervalo = TextEditingController();
-
   bool comprimido = false;
   GlobalKey<FormState> _formkey = GlobalKey();
+  var hora = TimeOfDay.now();
+  DateTime dataInicio;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +90,7 @@ class _CadastroPageState
                                   onChanged: (x) {
                                     setState(() {
                                       comprimido = x;
+                                      print(x);
                                     });
                                   },
                                 ),
@@ -138,6 +140,56 @@ class _CadastroPageState
                             controller: _intervalo,
                             keyboardType: TextInputType.number,
                           ),
+                          Row(
+                            children: [
+                              Text(
+                                'Inicio ás: ${hora.format(context)}',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              FloatingActionButton(
+                                backgroundColor: Colors.white,
+                                heroTag: null,
+                                mini: true,
+                                child: Icon(
+                                  Icons.timer,
+                                  color: comprimido
+                                      ? Colors.deepOrange
+                                      : Colors.blue,
+                                ),
+                                onPressed: () async {
+                                  var res = await showTimePicker(
+                                    initialTime: TimeOfDay.now(),
+                                    context: context,
+                                  );
+                                  if (res != null) {
+                                    setState(() {
+                                      hora = res;
+                                    });
+                                  }
+                                  DateTime data = DateTime.now();
+                                  dataInicio = data
+                                      .add(
+                                        Duration(
+                                          hours: hora.hour,
+                                          minutes: hora.minute,
+                                        ),
+                                      )
+                                      .subtract(
+                                        Duration(
+                                          hours: DateTime.now().hour,
+                                          minutes: DateTime.now().minute,
+                                        ),
+                                      );
+                                },
+                              )
+                            ],
+                          ),
                           SizedBox(
                             height: 30,
                           ),
@@ -154,6 +206,10 @@ class _CadastroPageState
                               ),
                               onPressed: () {
                                 if (_formkey.currentState.validate()) {
+                                  if (dataInicio == null) {
+                                    dataInicio = DateTime.now();
+                                  }
+
                                   controller.cadastroMedicamento(
                                     MedicamentoModel(
                                       nome: _nome.text,
@@ -163,6 +219,7 @@ class _CadastroPageState
                                       intervalos: int.parse(_intervalo.text),
                                       comprimido: comprimido,
                                     ),
+                                    dataInicio,
                                   );
                                 }
                               },

@@ -40,83 +40,14 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       initializationSettings,
       onSelectNotification: onSelectNotification,
     );
-    /* const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'repeating channel id',
-      'repeating channel name',
-      'repeating description',
-    );
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-    );
-
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-      0,
-      'repeating title',
-      'repeating body',
-      RepeatInterval.everyMinute,
-      platformChannelSpecifics,
-      androidAllowWhileIdle: true,
-    ); */
   }
 
   // selecionar notificação
   Future onSelectNotification(String payLoad) {
     if (payLoad != null) {
       print(payLoad);
+      Modular.to.pushNamed('/lembrete');
     }
-  }
-
-  Future<void> notificationAfterSec() async {
-    /* AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'second channel ID',
-      'second Channel title',
-      'second channel body',
-      priority: Priority.high,
-      importance: Importance.max,
-      ticker: 'test',
-    );
-
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-
-    for (var i = 0; i < 5; i++) {
-      var timeDelayed = DateTime.now().add(Duration(minutes: (1 * i)));
-      print(timeDelayed);
-
-      await flutterLocalNotificationsPlugin.schedule(
-        i,
-        'Ola, $i',
-        'está tudo dando certo',
-        timeDelayed,
-        notificationDetails,
-        androidAllowWhileIdle: true,
-      );
-    } */
-  }
-
-  Future<void> notification() async {
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'Channel ID',
-      'Channel title',
-      'channel body',
-      priority: Priority.high,
-      importance: Importance.max,
-      ticker: 'test',
-    );
-
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Hello there',
-      'please subscribe my channel',
-      notificationDetails,
-    );
   }
 
   @override
@@ -165,7 +96,11 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
               SizedBox(
                 height: 30,
               ),
-              CardAlerta(),
+              CardAlerta(
+                onPressd: () {
+                  Modular.to.pushNamed('/lembrete');
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -231,20 +166,10 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (_, i) {
-                        MedicamentoModel model = MedicamentoModel(
-                          id: controller.listarMedicamentos.elementAt(i)['id'],
-                          nome: controller.listarMedicamentos
-                              .elementAt(i)['nome'],
-                          descricao: controller.listarMedicamentos
-                              .elementAt(i)['descricao'],
-                          qtdDiaria: controller.listarMedicamentos
-                              .elementAt(i)['qtdDiaria'],
-                          comprimido: controller.listarMedicamentos
-                                      .elementAt(i)['comprimido'] ==
-                                  '1'
-                              ? true
-                              : false,
-                        );
+                        print(controller.listarMedicamentos);
+
+                        MedicamentoModel model = MedicamentoModel.fromMap(
+                            controller.listarMedicamentos.elementAt(i));
 
                         return CardItem(
                           titulo: model.nome,
@@ -253,16 +178,17 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                           comprimido: model.comprimido,
                           tag: model.id.toString(),
                           onPressd: () {
-                            Modular.to.pushNamed(
-                              '/detalhes',
-                              arguments: {'tag': '1', 'comp': true},
-                            );
+                            Modular.to.pushNamed('/detalhes', arguments: model);
                           },
                         );
                       },
                     );
                   } else {
-                    return Center(child: CircularProgressIndicator.adaptive());
+                    return Center(
+                        child: Padding(
+                      padding: const EdgeInsets.all(130),
+                      child: CircularProgressIndicator.adaptive(),
+                    ));
                   }
                 },
               ),
