@@ -36,10 +36,28 @@ class _DetalhesPageState
                   ? Colors.deepOrange.shade400
                   : Colors.blueAccent,
               actions: [
-                IconButton(
+                PopupMenuButton(
                   icon: Icon(Icons.more_horiz),
-                  color: Colors.white,
-                  onPressed: () {},
+                  onSelected: (x) {
+                    print(x);
+                    if (x) {
+                      print('Mandar para editar');
+                    } else {
+                      alertaExcluir(widget.model.id);
+                    }
+                  },
+                  itemBuilder: (x) {
+                    return [
+                      PopupMenuItem(
+                        child: Text('Editar'),
+                        value: true,
+                      ),
+                      PopupMenuItem(
+                        value: false,
+                        child: Text('Excluir'),
+                      ),
+                    ];
+                  },
                 )
               ],
               expandedHeight: 250.0,
@@ -147,7 +165,7 @@ class _DetalhesPageState
                           height: 5,
                         ),
                         Text(
-                          widget.model.intervalos.toString() + ' H',
+                          widget.model.intervalos.toString() + ' Horas',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
@@ -201,6 +219,37 @@ class _DetalhesPageState
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // alerta excluir
+  alertaExcluir(int id) {
+    showDialog(
+      context: context,
+      child: AlertDialog(
+        title: Text('Deseja Excluir Medicamento?'),
+        content: Text(
+          'Se você quer realmente apagar esse medicamento click em SIM.',
+        ),
+        actions: [
+          MaterialButton(
+            child: Text('Não'),
+            color: Colors.red,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          MaterialButton(
+            color: Colors.green,
+            child: Text('Sim'),
+            onPressed: () async {
+              controller.excluirMedicamento(id);
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
     );
   }

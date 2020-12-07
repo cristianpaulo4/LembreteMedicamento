@@ -27,6 +27,14 @@ mixin _$HomeController on _HomeControllerBase, Store {
               () => super.listarMedicamentos,
               name: '_HomeControllerBase.listarMedicamentos'))
           .value;
+  Computed<List<Map<dynamic, dynamic>>> _$getMedicamentoEmDiaComputed;
+
+  @override
+  List<Map<dynamic, dynamic>> get getMedicamentoEmDia =>
+      (_$getMedicamentoEmDiaComputed ??= Computed<List<Map<dynamic, dynamic>>>(
+              () => super.getMedicamentoEmDia,
+              name: '_HomeControllerBase.getMedicamentoEmDia'))
+          .value;
 
   final _$_medicamentosAtom = Atom(name: '_HomeControllerBase._medicamentos');
 
@@ -43,26 +51,42 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
-  final _$blocAtom = Atom(name: '_HomeControllerBase.bloc');
+  final _$_medicamentosEmDiaAtom =
+      Atom(name: '_HomeControllerBase._medicamentosEmDia');
 
   @override
-  SelectBloc get bloc {
-    _$blocAtom.reportRead();
-    return super.bloc;
+  ObservableStream<List<Map<dynamic, dynamic>>> get _medicamentosEmDia {
+    _$_medicamentosEmDiaAtom.reportRead();
+    return super._medicamentosEmDia;
   }
 
   @override
-  set bloc(SelectBloc value) {
-    _$blocAtom.reportWrite(value, super.bloc, () {
-      super.bloc = value;
+  set _medicamentosEmDia(ObservableStream<List<Map<dynamic, dynamic>>> value) {
+    _$_medicamentosEmDiaAtom.reportWrite(value, super._medicamentosEmDia, () {
+      super._medicamentosEmDia = value;
     });
+  }
+
+  final _$initAsyncAction = AsyncAction('_HomeControllerBase.init');
+
+  @override
+  Future init() {
+    return _$initAsyncAction.run(() => super.init());
+  }
+
+  final _$verificarLembreteAsyncAction =
+      AsyncAction('_HomeControllerBase.verificarLembrete');
+
+  @override
+  Future verificarLembrete() {
+    return _$verificarLembreteAsyncAction.run(() => super.verificarLembrete());
   }
 
   @override
   String toString() {
     return '''
-bloc: ${bloc},
-listarMedicamentos: ${listarMedicamentos}
+listarMedicamentos: ${listarMedicamentos},
+getMedicamentoEmDia: ${getMedicamentoEmDia}
     ''';
   }
 }

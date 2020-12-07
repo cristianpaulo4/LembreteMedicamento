@@ -15,7 +15,7 @@ class BancoLocal {
       ..boolean("comprimido", defaultValue: true);
 
     DbTable dose = DbTable("dose")
-      ..varchar("time")
+      ..timestamp("time")
       ..boolean("ok", defaultValue: false)
       ..foreignKey(
         "idMedicamento",

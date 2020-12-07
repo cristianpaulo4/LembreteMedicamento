@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'package:lebrete_medicamento/app/banco/bancoSql.dart';
-import 'package:lebrete_medicamento/repository/MedicamentoRepositoryInterface.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:sqlcool/sqlcool.dart';
@@ -9,33 +9,53 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
-  final IMedicamentoRepository _repository = Modular.get();
   final BancoLocal _bancoLocal = Modular.get();
-
   @observable
   ObservableStream<List<Map>> _medicamentos;
-  @observable
+
   SelectBloc bloc;
+  SelectBloc _lembreteBloc;
+
+  @observable
+  ObservableStream<List<Map>> _medicamentosEmDia;
 
   _HomeControllerBase() {
-    _init();
+    init();
+    verificarLembrete();
   }
 
-  _init() async {
-    this._repository.listar();
-    Db _db = await this._bancoLocal.inicializar();
-
+  @action
+  init() async {
+    var _db = await _bancoLocal.inicializar();
     this.bloc = SelectBloc(
       table: "dados",
       orderBy: "id DESC",
-      verbose: true,
       database: _db,
       reactive: true,
+      verbose: true,
     );
     _medicamentos = this.bloc.items.asObservable();
+  }
+
+  @action
+  verificarLembrete() async {
+    var _db = await _bancoLocal.inicializar();
+    this._lembreteBloc = SelectBloc(
+      table: "dose",
+      orderBy: "id DESC",
+      where: "dose.time<='${DateTime.now()}'and ok=0",
+      database: _db,
+      reactive: true,
+      verbose: true,
+    );
+    this._medicamentosEmDia = this._lembreteBloc.items.asObservable();
   }
 
   @computed
   List<Map> get listarMedicamentos =>
       this._medicamentos == null ? null : this._medicamentos.data;
+
+  @computed
+  List<Map> get getMedicamentoEmDia =>
+      this._medicamentosEmDia == null ? null : this._medicamentosEmDia.data;
 }

@@ -43,6 +43,15 @@ mixin _$DetalhesController on _DetalhesControllerBase, Store {
     });
   }
 
+  final _$excluirMedicamentoAsyncAction =
+      AsyncAction('_DetalhesControllerBase.excluirMedicamento');
+
+  @override
+  Future<bool> excluirMedicamento(int id) {
+    return _$excluirMedicamentoAsyncAction
+        .run(() => super.excluirMedicamento(id));
+  }
+
   final _$_DetalhesControllerBaseActionController =
       ActionController(name: '_DetalhesControllerBase');
 

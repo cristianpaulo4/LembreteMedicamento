@@ -1,31 +1,33 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:lebrete_medicamento/app/utils/utils.dart';
 
 class CardAlerta extends StatelessWidget {
-  final String titulo;
-  final String ml;
-  final String detalhes;
+  final bool medicamentosEmDia;
   final Function onPressd;
   const CardAlerta({
     Key key,
-    this.titulo,
-    this.ml,
-    this.detalhes,
+    this.medicamentosEmDia,
     this.onPressd,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 160,
+      height: largura * 0.5,
       padding: EdgeInsets.all(25),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         gradient: LinearGradient(
-          colors: [
-            Colors.greenAccent.shade200,
-            Colors.greenAccent.shade400,
-          ],
+          colors: medicamentosEmDia
+              ? [
+                  Colors.greenAccent.shade200,
+                  Colors.greenAccent.shade400,
+                ]
+              : [
+                  Colors.red.shade200,
+                  Colors.red.shade400,
+                ],
           end: Alignment.bottomCenter,
         ),
       ),
@@ -37,7 +39,7 @@ class CardAlerta extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: Icon(
-                    Icons.notifications,
+                    medicamentosEmDia ? Icons.check : Icons.info,
                     size: 25,
                     color: Colors.white,
                   ),
@@ -55,7 +57,9 @@ class CardAlerta extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AutoSizeText(
-                        'Hora do Medicamentos',
+                        medicamentosEmDia
+                            ? 'Você está em Dias!'
+                            : 'Você não está Dias!',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -72,18 +76,25 @@ class CardAlerta extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AutoSizeText(
-                  'Medicamentos a serem tomados',
-                  style: TextStyle(
-                    color: Colors.white,
+                Container(
+                  width: largura * 0.50,
+                  child: AutoSizeText(
+                    medicamentosEmDia
+                        ? 'Você não possui medicamento \npara serem tomados.'
+                        : 'Você possui medicamentos a \nserem tomados!',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    presetFontSizes: [17],
                   ),
-                  presetFontSizes: [17],
                 ),
                 SizedBox(
                   height: 40,
                   child: FloatingActionButton.extended(
                     heroTag: null,
-                    backgroundColor: Colors.greenAccent,
+                    backgroundColor: medicamentosEmDia
+                        ? Colors.greenAccent
+                        : Colors.redAccent,
                     label: Text('Ver'),
                     icon: Icon(Icons.check),
                     elevation: 2,

@@ -20,6 +20,11 @@ abstract class _DetalhesControllerBase with Store {
     _listaDoses = this._repository.listarDoses(id).asObservable();
   }
 
+  @action
+  Future<bool> excluirMedicamento(int id) async {
+    await this._repository.excluirMedicamento(id);
+  }
+
   @computed
   ObservableFuture<List<DoseModel>> get listarDoses => this._listaDoses;
 }

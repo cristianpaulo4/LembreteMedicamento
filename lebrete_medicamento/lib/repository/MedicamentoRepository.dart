@@ -1,4 +1,3 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lebrete_medicamento/app/banco/bancoSql.dart';
 import 'package:lebrete_medicamento/app/notificacao/notificacao.dart';
@@ -13,8 +12,7 @@ class MedicamentoRepository implements IMedicamentoRepository {
 
   @override
   Future<bool> cadastrar(MedicamentoModel model, DateTime dateTime) async {
-    print(model.toMap());
-    Db _db = await this._bancoLocal.inicializar();
+    var _db = await _bancoLocal.inicializar();
 
     int id = await _db.insertManageConflict(
       table: "dados",
@@ -24,9 +22,6 @@ class MedicamentoRepository implements IMedicamentoRepository {
 
     int hrs = model.intervalos;
     int qtdDoses = (model.qtdTotal / model.qtdDiaria).floor();
-
-    print(qtdDoses);
-    print('*' * 50);
 
     // inserir dosses
     for (var i = 0; i < qtdDoses; i++) {
@@ -50,7 +45,7 @@ class MedicamentoRepository implements IMedicamentoRepository {
   // listar medicamentos
   @override
   Future<List<MedicamentoModel>> listar() async {
-    Db _db = await this._bancoLocal.inicializar();
+    var _db = await _bancoLocal.inicializar();
     List<Map<String, dynamic>> rows = await _db.select(
       table: "dados",
     );
@@ -61,7 +56,7 @@ class MedicamentoRepository implements IMedicamentoRepository {
 
   @override
   Future<List<DoseModel>> listarDoses(int id) async {
-    Db _db = await this._bancoLocal.inicializar();
+    var _db = await _bancoLocal.inicializar();
     List<DoseModel> listDoses = List();
     List<Map<String, dynamic>> rows =
         await _db.select(table: "dose", where: "idMedicamento=$id");
@@ -70,5 +65,49 @@ class MedicamentoRepository implements IMedicamentoRepository {
       listDoses.add(DoseModel.fromMap(element));
     });
     return listDoses;
+  }
+
+  @override
+  Future<List<Map>> listarDosesParaTomar() async {
+    var _db = await _bancoLocal.inicializar();
+
+    List<Map<String, dynamic>> join = await _db.join(
+      table: "dados",
+      joinTable: "dose",
+      joinOn: "dados.id=dose.idMedicamento",
+      orderBy: "dados.id DESC",
+      where: "dose.time <= '${DateTime.now()}' and ok = 0 ",
+    );
+
+    return join;
+  }
+
+  @override
+  Future<bool> tomarRemedio(int id) async {
+    try {
+      var _db = await _bancoLocal.inicializar();
+      int updated = await _db.update(
+        table: "dose",
+        row: {'ok': '1'},
+        where: "id=$id",
+        verbose: true,
+      );
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> excluirMedicamento(int id) async {
+    try {
+      var _db = await _bancoLocal.inicializar();
+      await _db.delete(table: "dose", where: "idMedicamento=$id");
+      await _db.delete(table: "dados", where: "id=$id");
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
