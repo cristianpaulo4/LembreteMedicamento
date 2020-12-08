@@ -2,9 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:lebrete_medicamento/app/components%20globais/Dialogo.dart';
+import 'package:lebrete_medicamento/app/componentsGlobais/Dialogo.dart';
 import 'package:lebrete_medicamento/app/modules/detalhes/components/ItemDose.dart';
-import 'package:lebrete_medicamento/app/modules/home/components/cardAlerta.dart';
 import 'package:lebrete_medicamento/model/medicamentoModel.dart';
 import 'detalhes_controller.dart';
 

@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:lebrete_medicamento/app/modules/home/components/cardAlerta.dart';
+import 'package:lebrete_medicamento/app/componentsGlobais/Dialogo.dart';
 import 'package:lebrete_medicamento/app/modules/telaLembrete/components/itemLembrete.dart';
 import 'package:lebrete_medicamento/app/utils/utils.dart';
 import 'tela_lembrete_controller.dart';
@@ -99,30 +99,20 @@ class _TelaLembretePageState
                         onPressed: () async {
                           await showDialog(
                             context: context,
-                            child: AlertDialog(
-                              title: Text('Já tomou o Medicamento?'),
-                              content: Text(
-                                'Se você já tomou esse remédio click em SIM.',
-                              ),
-                              actions: [
-                                MaterialButton(
-                                  child: Text('Não'),
-                                  color: Colors.red,
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                MaterialButton(
-                                  color: Colors.green,
-                                  child: Text('Sim'),
-                                  onPressed: () async {
-                                    await controller.tomarRemedio(controller
-                                        .listarLembrete.value
-                                        .elementAt(i)['id']);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
+                            child: Dialogo(
+                              titulo: "Já tomou o Medicamento?",
+                              texto:
+                                  'Se você já tomou esse remédio click em SIM.',
+                              nao: () {
+                                Navigator.pop(context);
+                              },
+                              sim: () async {
+                                await controller.tomarRemedio(
+                                  controller.listarLembrete.value
+                                      .elementAt(i)['id'],
+                                );
+                                Navigator.pop(context);
+                              },
                             ),
                           );
                         },
