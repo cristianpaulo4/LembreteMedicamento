@@ -76,7 +76,7 @@ class MedicamentoRepository implements IMedicamentoRepository {
       joinTable: "dose",
       joinOn: "dados.id=dose.idMedicamento",
       orderBy: "dados.id DESC",
-      where: "dose.time <= '${DateTime.now()}' and ok = 0 ",
+      where: "dose.time<='${DateTime.now()}' and ok='false'",
     );
 
     return join;

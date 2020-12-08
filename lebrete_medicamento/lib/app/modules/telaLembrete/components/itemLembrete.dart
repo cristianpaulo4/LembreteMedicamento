@@ -1,13 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lebrete_medicamento/app/utils/utils.dart';
 
 class ItemLembrete extends StatelessWidget {
   final String nome;
   final String ml;
   final String time;
+  final bool comprimido;
   final Function onPressed;
-  const ItemLembrete({Key key, this.nome, this.ml, this.time, this.onPressed})
+  const ItemLembrete(
+      {Key key, this.nome, this.ml, this.time, this.onPressed, this.comprimido})
       : super(key: key);
 
   @override
@@ -63,20 +66,24 @@ class ItemLembrete extends StatelessWidget {
                         presetFontSizes: [25, 30, 15],
                       ),
                       AutoSizeText(
-                        'Tomar ${ml} ml',
+                        'Tomar ${ml} ${comprimido ? "Unid." : "ml"}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                         presetFontSizes: [20, 30, 15],
                       ),
-                      AutoSizeText(
-                        'Data: ${DateFormat('dd/MM/yyyy').format(data)} | Hora: ${DateFormat.jm().format(data)}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                      Container(
+                        width: largura * 0.6,
+                        child: AutoSizeText(
+                          'Data: ${DateFormat('dd/MM/yyyy').format(data)} | Hora: ${DateFormat.jm().format(data)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 25,
+                          ),
+                          maxLines: 1,
                         ),
-                        presetFontSizes: [18, 19, 15],
                       ),
                     ],
                   ),

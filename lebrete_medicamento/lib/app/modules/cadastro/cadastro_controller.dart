@@ -20,6 +20,7 @@ abstract class _CadastroControllerBase with Store {
       await this._homeController.init();
       await this._homeController.verificarLembrete();
       Modular.to.pop();
+      Modular.to.pop();
     }
   }
 }

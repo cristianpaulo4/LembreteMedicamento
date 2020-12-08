@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:lebrete_medicamento/model/doesModel.dart';
 import 'package:lebrete_medicamento/repository/MedicamentoRepositoryInterface.dart';
 import 'package:mobx/mobx.dart';
@@ -22,6 +23,13 @@ abstract class _DetalhesControllerBase with Store {
 
   @action
   Future<bool> excluirMedicamento(int id) async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+
+    this._listaDoses.value.forEach((element) async {
+      await flutterLocalNotificationsPlugin.cancel(id);
+    });
+
     await this._repository.excluirMedicamento(id);
   }
 

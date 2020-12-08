@@ -9,6 +9,7 @@ import 'package:lebrete_medicamento/app/modules/home/components/cardAlerta.dart'
 import 'package:lebrete_medicamento/app/modules/home/components/cardItem.dart';
 import 'package:lebrete_medicamento/app/utils/utils.dart';
 import 'package:lebrete_medicamento/model/medicamentoModel.dart';
+import 'package:sqlcool/sqlcool.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -88,7 +89,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                           ),
                         ),
                         AutoSizeText(
-                          'Time Medical',
+                          'Medicine Time',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff264771),
@@ -149,7 +150,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                           ),
                         ),
                         Text(
-                          'na hora certa',
+                          'na hora certa.',
                           style: TextStyle(
                             fontSize: 25,
                             color: Color(0xff264771),
@@ -159,7 +160,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                           height: 30,
                         ),
                         Text(
-                          'saúde é coisa séria',
+                          'saúde é coisa séria!',
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.black45,
@@ -191,6 +192,19 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                 Observer(
                   builder: (_) {
                     if (controller.listarMedicamentos != null) {
+                      if (controller.listarMedicamentos.isEmpty) {
+                        return Container(
+                          margin: EdgeInsets.only(
+                            top: 50,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Você não possui medicamentos cadastrados!',
+                            ),
+                          ),
+                        );
+                      }
+
                       return ListView.builder(
                         itemCount: controller.listarMedicamentos.length,
                         shrinkWrap: true,

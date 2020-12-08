@@ -9,7 +9,7 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
-  final BancoLocal _bancoLocal = Modular.get();
+  final BancoLocal bancoLocal = Modular.get();
   @observable
   ObservableStream<List<Map>> _medicamentos;
 
@@ -26,7 +26,7 @@ abstract class _HomeControllerBase with Store {
 
   @action
   init() async {
-    var _db = await _bancoLocal.inicializar();
+    var _db = await bancoLocal.inicializar();
     this.bloc = SelectBloc(
       table: "dados",
       orderBy: "id DESC",
@@ -39,15 +39,22 @@ abstract class _HomeControllerBase with Store {
 
   @action
   verificarLembrete() async {
-    var _db = await _bancoLocal.inicializar();
+    var _db = await bancoLocal.inicializar();
     this._lembreteBloc = SelectBloc(
       table: "dose",
       orderBy: "id DESC",
-      where: "dose.time<='${DateTime.now()}'and ok=0",
       database: _db,
       reactive: true,
       verbose: true,
+      where: "dose.time<='${DateTime.now()}' and ok='false'",
     );
+
+    // where: "dose.time<='${DateTime.now()}'and ok=0",
+
+    this._lembreteBloc.items.listen((event) {
+      print(event);
+    });
+
     this._medicamentosEmDia = this._lembreteBloc.items.asObservable();
   }
 

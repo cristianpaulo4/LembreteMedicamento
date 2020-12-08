@@ -14,7 +14,7 @@ class CardAlerta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: largura * 0.5,
+      height: largura * 0.45,
       padding: EdgeInsets.all(25),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
@@ -52,21 +52,17 @@ class CardAlerta extends StatelessWidget {
                   width: 15,
                 ),
                 Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AutoSizeText(
-                        medicamentosEmDia
-                            ? 'Você está em Dias!'
-                            : 'Você não está Dias!',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        presetFontSizes: [25, 30, 15],
-                      ),
-                    ],
+                  width: largura * 0.6,
+                  child: AutoSizeText(
+                    medicamentosEmDia
+                        ? 'Você está em Dias!'
+                        : 'Você não está Dias!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                    maxLines: 1,
                   ),
                 ),
               ],
@@ -77,15 +73,15 @@ class CardAlerta extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: largura * 0.50,
+                  width: largura * 0.5,
                   child: AutoSizeText(
                     medicamentosEmDia
                         ? 'Você não possui medicamento \npara serem tomados.'
                         : 'Você possui medicamentos a \nserem tomados!',
                     style: TextStyle(
                       color: Colors.white,
+                      fontSize: 20,
                     ),
-                    presetFontSizes: [17],
                   ),
                 ),
                 SizedBox(

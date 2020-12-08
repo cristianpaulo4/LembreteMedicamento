@@ -72,12 +72,23 @@ class _TelaLembretePageState
               ),
               Observer(builder: (_) {
                 if (controller.listarLembrete.result != null) {
+                  if (controller.listarLembrete.value.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'Você não possui medicamento a serem tomados!',
+                      ),
+                    );
+                  }
+
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: controller.listarLembrete.value.length,
                     itemBuilder: (_, i) {
                       return ItemLembrete(
+                        comprimido: controller.listarLembrete.value
+                                .elementAt(i)['comprimido'] ==
+                            1,
                         nome: controller.listarLembrete.value
                             .elementAt(i)['nome'],
                         ml: controller.listarLembrete.value
