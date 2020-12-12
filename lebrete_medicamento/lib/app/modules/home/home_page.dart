@@ -248,7 +248,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         backgroundColor: Color(0xff4FCD9F),
         label: Text('Adicionar'),
         icon: Icon(Icons.add),
-        onPressed: () {
+        onPressed: () async {
           Modular.to.pushNamed('/cadastro');
         },
       ),
